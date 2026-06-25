@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: whoami-staging
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RaymondQuocDang/k8-argo-playground.git
+    targetRevision: main
+    path: charts/whoami
+    helm:
+      releaseName: whoami-staging
+      valueFiles:
+        - values-staging.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
